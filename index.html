@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+
+<head>
+  <meta name="viewport" content="width=320; user-scalable=no" />
+  <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+  <title>Camera</title>
+  <script
+    src="https://code.jquery.com/jquery-1.12.4.min.js"
+    integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
+    crossorigin="anonymous"
+  ></script>
+
+  <script>
+    $(document).ready(function () {
+      if (!("url" in window) && "webkitURL" in window) {
+        window.URL = window.webkitURL;
+      }
+      $("#camera").change(function (e) {
+        $("#pic").attr("src", URL.createObjectURL(e.target.files[0]));
+      });
+    });
+  </script>
+</head>
+
+<input
+  type="file"
+  id="camera"
+  name="camera"
+  capture="camera"
+  accept="image/*"
+/>
+<br />
+
+<img id="pic" style="width: 100%" />
