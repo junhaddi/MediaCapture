@@ -1,51 +1,32 @@
-var input = document.querySelector("input[type=file]");
+const express = require("express");
+const app = express();
+const server = require("http").Server(app);
 
-input.onchange = function () {
-  var file = input.files[0];
-  console.log(file);
-  upload(file);
-  drawOnCanvas(file);
-  // displayAsImage(file);
-};
+// Express 미들웨어 multer(파일 업로드)설정
+const multer = require("multer");
+const path = require("path");
+const upload = multer({
+  storage: multer.diskStorage({
+    destination: (req, file, cb) => {
+      cb(null, "uploads/");
+    },
+    filename: (req, file, cb) => {
+      cb(null, new Date().valueOf() + path.extname(file.originalname));
+    },
+  }),
+});
 
-function upload(file) {
-  var form = new FormData(),
-    xhr = new XMLHttpRequest();
+// 라우팅 설정
+app.get("/", (req, res) => {
+  res.sendFile(__dirname + "/index.html");
+});
 
-  form.append("image", file);
-  xhr.open("post", "server.php", true);
-  xhr.send(form);
-}
+app.post("/upload", upload.single("camera_image"), (req, res) => {
+  console.log(req.file);
+});
 
-function drawOnCanvas(file) {
-  var reader = new FileReader();
-
-  reader.onload = function (e) {
-    var dataURL = e.target.result,
-      c = document.querySelector("canvas"),
-      ctx = c.getContext("2d"),
-      img = new Image();
-
-    img.onload = function () {
-      c.width = img.width;
-      c.height = img.height;
-      ctx.drawImage(img, 0, 0);
-    };
-
-    img.src = dataURL;
-  };
-
-  reader.readAsDataURL(file);
-}
-
-function displayAsImage(file) {
-  var imgURL = URL.createObjectURL(file),
-    img = document.createElement("img");
-
-  img.onload = function () {
-    URL.revokeObjectURL(imgURL);
-  };
-
-  img.src = imgURL;
-  document.body.appendChild(img);
-}
+// Node서버 실행
+const port = process.env.PORT || 80;
+server.listen(port, () => {
+  console.log(`Listening on ${server.address().port}`);
+});

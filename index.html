@@ -6,14 +6,42 @@
   </head>
 
   <body>
-    <input type="file" accept="image/*" capture />
+    <form action="/upload" method="post" enctype="multipart/form-data">
+      <input
+        type="file"
+        name="camera_image"
+        accept="image/*"
+        capture="camera"
+      />
+      <input type="submit" value="업로드" />
+    </form>
+
     <canvas></canvas>
 
-    <!-- <form action="server.cgi" method="post" enctype="multipart/form-data">
-      <input type="file" name="image" accept="image/*" capture="user" />
-      <input type="submit" value="Upload" />
-    </form> -->
+    <script>
+      var input = document.querySelector("input[type=file]");
+      input.onchange = () => {
+        var file = input.files[0];
+        drawOnCanvas(file);
+      };
 
-    <script src="index.js"></script>
+      function drawOnCanvas(file) {
+        var reader = new FileReader();
+        reader.onload = (e) => {
+          var dataURL = e.target.result,
+            c = document.querySelector("canvas"),
+            ctx = c.getContext("2d"),
+            img = new Image();
+
+          img.onload = () => {
+            c.width = img.width;
+            c.height = img.height;
+            ctx.drawImage(img, 0, 0);
+          };
+          img.src = dataURL;
+        };
+        reader.readAsDataURL(file);
+      }
+    </script>
   </body>
 </html>
