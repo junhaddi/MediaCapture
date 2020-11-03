@@ -1,34 +1,19 @@
 <!DOCTYPE html>
 
-<head>
-  <meta name="viewport" content="width=320; user-scalable=no" />
-  <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
-  <title>Camera</title>
-  <script
-    src="https://code.jquery.com/jquery-1.12.4.min.js"
-    integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
-    crossorigin="anonymous"
-  ></script>
+<html>
+  <head>
+    <title>MediaCapture</title>
+  </head>
 
-  <script>
-    $(document).ready(function () {
-      if (!("url" in window) && "webkitURL" in window) {
-        window.URL = window.webkitURL;
-      }
-      $("#camera").change(function (e) {
-        $("#pic").attr("src", URL.createObjectURL(e.target.files[0]));
-      });
-    });
-  </script>
-</head>
+  <body>
+    <input type="file" accept="image/*" capture />
+    <canvas></canvas>
 
-<input
-  type="file"
-  id="camera"
-  name="camera"
-  capture="camera"
-  accept="image/*"
-/>
-<br />
+    <!-- <form action="server.cgi" method="post" enctype="multipart/form-data">
+      <input type="file" name="image" accept="image/*" capture="user" />
+      <input type="submit" value="Upload" />
+    </form> -->
 
-<img id="pic" style="width: 100%" />
+    <script src="index.js"></script>
+  </body>
+</html>
