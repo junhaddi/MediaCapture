@@ -23,6 +23,7 @@ app.get("/", (req, res) => {
 
 app.post("/upload", upload.single("camera_image"), (req, res) => {
   console.log(req.file);
+  res.send("업로드 성공!");
 });
 
 // Node서버 실행
