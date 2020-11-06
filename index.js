@@ -17,8 +17,10 @@ const upload = multer({
 });
 
 // 라우팅 설정
+app.use(express.static(__dirname + "/dist"));
+
 app.get("/", (req, res) => {
-  res.sendFile(__dirname + "/index.html");
+  res.sendFile(__dirname + "/dist/index.html");
 });
 
 app.post("/upload", upload.single("camera_image"), (req, res) => {
